@@ -1,0 +1,323 @@
+<!DOCTYPE html>                                                                                                                        <!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Pour Un Champion - JCPGE</title>
+    <style>
+        /* Reset et polices */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        /* Variables couleurs */
+        :root {
+            --primary: #2A5C82;
+            --secondary: #F4B41B;
+            --light: #f8f9fa;
+        }
+
+        /* Header */
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1rem;
+            background: var(--secondary);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Sections générales */
+        section {
+            padding: 3rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Bannière hero */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://picsum.photos/1200/600') center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Cartes */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Tableau */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        th, td {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Boutons */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin: 1rem 0;
+            background: var(--secondary);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Question Pour Un Champion</h1>
+        <p>Jeu de culture générale - Édition JCPGE 2025</p>
+    </header>
+
+    <nav>
+      <a href="#accueil">Accueil</a>
+      <!-- Lien modifié pour rediriger vers sondage.html -->
+      <a href="sondage_inscription.html">Inscription</a>
+      <a href="#sondage">Sondage</a>
+      <a href="#regles">Règles</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="hero">
+        <div>
+            <h1>Testons notre culture générale !</h1>
+            <a href="sondage_inscription.html" class="btn">S'inscrire maintenant</a>
+        </div>
+    </div>
+
+    <section id="accueil">
+        <h2>Bienvenue sur la plateforme officielle</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>🏆 Le Tournoi</h3>
+                <p>12 équipes - 3 phases palpitantes - Prix de 20 000 FCFA</p>
+            </div>
+            <div class="card">
+                <h3>📅 Calendrier</h3>
+                <p>Inscriptions du 19 au 26 février 2025</p>
+            </div>
+            <div class="card">
+                <h3>🎯 Objectifs</h3>
+                <p>Stimuler l'esprit d'équipe et la curiosité intellectuelle</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="regles">
+        <h2>Déroulement du jeu</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Phase 1 : Pré-sélection</h3>
+                <p>12 mars 2025 - Sélection de 6 équipes</p>
+            </div>
+            <div class="card">
+                <h3>Phase 2 : Quarts de finale</h3>
+                <p>26 mars 2025 - 3 équipes qualifiées</p>
+            </div>
+            <div class="card">
+                <h3>Phase 3 : Demi-finale & Finale</h3>
+                <p>Jour des JCPGE - Affrontement final</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="themes">
+        <section id="themes">
+            <h2>Thèmes du Sondage</h2>
+            <div class="card-grid">
+                <!-- Histoire & Civilisations -->
+                <div class="card">
+                    <h3>🏛️ Histoire & Civilisations</h3>
+                    <ul>
+                        <li>1. Grandes civilisations </li>
+                        <li>2. Guerres célèbres </li>
+                        <li>3. Rois et empereurs </li>
+                        <li>4. Inventions historiques </li>
+                        <li>5. Révolutions sociales </li>
+                        <li>6. Explorateurs </li>
+                        <li>7. XXe siècle </li>
+                        <li>8. Histoire des religions </li>
+                        <li>9. Croyances </li>
+                    </ul>
+                </div>
+        
+                <!-- Géographie & Environnement -->
+                <div class="card">
+                    <h3>🌍 Géographie & Environnement</h3>
+                    <ul>
+                        <li>10. Pays et capitales </li>
+                        <li>11. Merveilles du monde </li>
+                        <li>12. Reliefs géographiques </li>
+                        <li>13. Drapeaux </li>
+                        <li>14. Climat </li>
+                        <li>15. Espaces urbains </li>
+                        <li>16. Réserves naturelles </li>
+                        <li>17. Écologie </li>
+                        <li>18. Espèces en danger </li>
+                        <li>19. Énergies renouvelables </li>
+                        <li>20. Théorie de Darwin </li>
+                    </ul>
+                </div>
+        
+                <!-- Sciences Physiques -->
+                <div class="card">
+                    <h3>⚛️ Sciences Physiques</h3>
+                    <ul>
+                        <li>21. Gravité </li>
+                        <li>22. Énergie nucléaire </li>
+                        <li>23. Électromagnétisme </li>
+                        <li>24. Chimie organique </li>
+                        <li>25. États de la matière </li>
+                        <li>26. Thermodynamique </li>
+                        <li>27. Réactions chimiques </li>
+                        <li>28. Métaux industriels </li>
+                        <li>29. Explosifs chimiques </li>
+                        <li>30. Particules subatomiques </li>
+                    </ul>
+                </div>
+
+                <!-- Astronomie & Espace -->
+                <div class="card">
+                    <h3>🌌 Astronomie & Espace</h3>
+                    <ul>
+                        <li>31. Missions spatiales </li>
+                        <li>32. Trous noirs </li>
+                        <li>33. Météorites </li>
+                        <li>34. Système solaire </li>
+                        <li>35. Activité solaire </li>
+                        <li>36. Univers parallèles </li>
+                        <li>37. Conquête spatiale </li>
+                        <li>38. Vie des étoiles </li>
+                    </ul>
+                </div>
+        
+                <!-- Mathématiques -->
+                <div class="card">
+                    <h3>🧮 Mathématiques</h3>
+                    <ul>
+                        <li>39. Suites mathématiques </li>
+                        <li>40. Mathématiciens célèbres </li>
+                        <li>41. Nombre π </li>
+                    </ul>
+                </div>
+
+                <!-- Société & Culture -->
+                <div class="card">
+                    <h3>🎭 Société & Culture</h3>
+                    <ul>
+                        <li>42. Cultures du monde </li>
+                        <li>43. Gastronomie </li>
+                        <li>44. Psychologie humaine</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <section id="calendrier">
+        <h2>Calendrier officiel</h2>
+        <table>
+            <tr>
+                <th>Événement</th>
+                <th>Date</th>
+            </tr>
+            <tr>
+                <td>Lancement du sondage</td>
+                <td>19 février 2025</td>
+            </tr>
+            <tr>
+                <td>Inscriptions</td>
+                <td>19-26 février 2025</td>
+            </tr>
+            <tr>
+                <td>Phase de pré-sélection</td>
+                <td>12 mars 2025</td>
+            </tr>
+            <tr>
+                <td>Quarts de finale</td>
+                <td>26 mars 2025</td>
+            </tr>
+        </table>
+    </section>
+
+    <section id="contact">
+        <h2>Contact</h2>
+        <div class="card">
+          <p>📧 doriasodjinou@gmail.com</p>
+          <p>📱 +2290158078669</p>
+          <a href="https://wa.me/22958078669" class="btn">Contact WhatsApp</a>
+      </div>      
+    </section>
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Pour Un Champion - Plateforme Officielle</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .nav-button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            background: var(--light);
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav-button.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--secondary);
+            outline: none;
+        }
+
+        button {
+            background: var(--secondary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .stats-container {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .theme-group {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--secondary);
+            transition: width 0.5s ease;
+        }
+
+        .percentage {
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+        }
+
+        .team-counter {
+            margin-top: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffffff;
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎮 Question Pour Un Champion</h1>
+            <p>JCPGE 2025 - Plateforme Officielle</p>
+            <div class="team-counter" id="teamCounter">Équipes inscrites: 0/12</div>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-button active" onclick="showSection('inscription')">Inscription Équipes</button>
+            <button class="nav-button" onclick="showSection('sondage')">Sondage Thématiques</button>
+        </nav>
+
+        <!-- Section Inscription -->
+        <section id="inscription" class="section">
+            <h2>Inscription des Équipes</h2>
+            <form id="teamForm">
+                <div class="form-group">
+                    <label>Nom du chef d'équipe:</label>
+                    <input type="text" id="leaderName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Nombre de membres (2-5):</label>
+                    <input type="number" id="teamSize" min="2" max="5" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Mot de passe:</label>
+                    <input type="password" id="teamPassword" minlength="8" required>
+                    <small style="color: var(--accent);">⚠️ Désolé nous n'avons pas une gestion de récupération des mots de passe.</small>
+                    <small style="color: var(--accent);">Alors s'il vous plaît veillez à mettre un mot de passe simple et facile à retenir </small>
+                </div>
+
+                <button type="submit">Créer l'équipe</button>
+            </form>
+            <!-- Ajouter ceci dans la section inscription après le formulaire de création -->
+            <div class="form-section" style="margin-top: 2rem;">
+                <h3>Supprimer mon équipe</h3>
+                <div class="form-group">
+                    <label>ID de l'équipe :</label>
+                    <input type="text" id="deleteTeamId" required>
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe :</label>
+                    <input type="password" id="deleteTeamPassword" required>
+                </div>
+                <button type="button" onclick="deleteTeam()" style="background: var(--accent)">Supprimer l'équipe</button>
+            </div>
+            <div id="teamList" class="stats-container" style="margin-top: 2rem;"></div>
+        </section>
+
+        <!-- Section Sondage -->
+        <section id="sondage" class="section" style="display: none;">
+            <h2>Sondage Thématique</h2>
+            <form id="surveyForm">
+                <div class="stats-container">
+                    <!-- Histoire & Civilisations -->
+                    <div class="theme-group">
+                        <h3>📜 Histoire & Civilisations</h3>
+                        <div class="theme-item" data-id="1">
+                            <label><input type="checkbox" name="theme">1. Grandes civilisations<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="2">
+                            <label><input type="checkbox" name="theme">2. Guerres célèbres<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="3">
+                            <label><input type="checkbox" name="theme">3. Rois et empereurs<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="4">
+                            <label><input type="checkbox" name="theme">4. Inventions historiques<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="5">
+                            <label><input type="checkbox" name="theme">5. Révolutions sociales<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="6">
+                            <label><input type="checkbox" name="theme">6. Explorateurs<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="7">
+                            <label><input type="checkbox" name="theme">7. XXe siècle<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="8">
+                            <label><input type="checkbox" name="theme">8. Histoire des religions<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="43">
+                            <label><input type="checkbox" name="theme">9. Croyances<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                    </div>
+
+                    <!-- Géographie & Environnement -->
+                    <div class="theme-group">
+                        <h3>🌍 Géographie & Environnement</h3>
+                        <div class="theme-item" data-id="10">
+                            <label><input type="checkbox" name="theme">10. Merveilles du monde<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="11">
+                            <label><input type="checkbox" name="theme">11. Reliefs géographiques<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="12">
+                            <label><input type="checkbox" name="theme">12. Drapeaux<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="13">
+                            <label><input type="checkbox" name="theme">13. Climat<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="14">
+                            <label><input type="checkbox" name="theme">14. Espaces urbains<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="15">
+                            <label><input type="checkbox" name="theme">15. Réserves naturelles<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="16">
+                            <label><input type="checkbox" name="theme">16. Écologie<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="17">
+                            <label><input type="checkbox" name="theme">17. Espèces en danger<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="18">
+                            <label><input type="checkbox" name="theme">18. Énergies renouvelables<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="19">
+                            <label><input type="checkbox" name="theme">19. Théorie de Darwin<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="9">
+                            <label><input type="checkbox" name="theme">20. Pays et capitales<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                    </div>
+
+                    <!-- Sciences Physiques -->
+                    <div class="theme-group">
+                        <h3>⚛️ Sciences Physiques</h3>
+                        <div class="theme-item" data-id="21">
+                            <label><input type="checkbox" name="theme">21. Gravité<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="22">
+                            <label><input type="checkbox" name="theme">22. Énergie nucléaire<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="23">
+                            <label><input type="checkbox" name="theme">23. Électromagnétisme<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="24">
+                            <label><input type="checkbox" name="theme">24. Chimie organique<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="25">
+                            <label><input type="checkbox" name="theme">25. États de la matière<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="26">
+                            <label><input type="checkbox" name="theme">26. Thermodynamique<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="27">
+                            <label><input type="checkbox" name="theme">27. Réactions chimiques<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="28">
+                            <label><input type="checkbox" name="theme">28. Métaux industriels<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="29">
+                            <label><input type="checkbox" name="theme">29. Explosifs chimiques<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="20">
+                            <label><input type="checkbox" name="theme">30. Particules subatomiques<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                    </div>
+
+                    <!-- Astronomie & Espace -->
+                    <div class="theme-group">
+                        <h3>🚀 Astronomie & Espace</h3>
+                        <div class="theme-item" data-id="31">
+                            <label><input type="checkbox" name="theme">31. Missions spatiales<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="32">
+                            <label><input type="checkbox" name="theme">32. Trous noirs<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="33">
+                            <label><input type="checkbox" name="theme">33. Météorites<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="34">
+                            <label><input type="checkbox" name="theme">34. Système solaire<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="35">
+                            <label><input type="checkbox" name="theme">35. Activité solaire<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="36">
+                            <label><input type="checkbox" name="theme">36. Univers parallèles<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="37">
+                            <label><input type="checkbox" name="theme">37. Conquête spatiale<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="30">
+                            <label><input type="checkbox" name="theme">38. Vie des étoiles<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                    </div>
+
+                    <!-- Mathématiques -->
+                    <div class="theme-group">
+                        <h3>🧮 Mathématiques</h3>
+                        <div class="theme-item" data-id="38">
+                            <label><input type="checkbox" name="theme">39. Suites mathématiques<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="39">
+                            <label><input type="checkbox" name="theme">40. Mathématiciens célèbres<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="40">
+                            <label><input type="checkbox" name="theme">41. Nombre Pi<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                    </div>
+
+                    <!-- Société & Culture -->
+                    <div class="theme-group">
+                        <h3>🌐 Société & Culture</h3>
+                        <div class="theme-item" data-id="41">
+                            <label><input type="checkbox" name="theme">42. Cultures du monde<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="42">
+                            <label><input type="checkbox" name="theme">43. Gastronomie<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                        <div class="theme-item" data-id="44">
+                            <label><input type="checkbox" name="theme">44. Psychologie humaine<div class="progress-bar"><div class="progress-fill"></div></div><div class="percentage">0%</div></label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">Voter (Max 5)</button>
+                <!-- Ajouter ce bouton dans la section sondage -->
+                <div class="submit-section">
+                    <button type="button" onclick="resetVotes()" style="background: var(--accent); margin-top: 20px;">
+                        Réinitialiser les sondages
+                    </button>
+                </div>
+
+                <script>
+                // En haut du script avec les autres constantes
+                const ADMIN_PASSWORD_HASH = CryptoJS.SHA256("Projet_Doria").toString();
+
+                function resetVotes() {
+                    const password = prompt("Entrez le mot de passe administrateur :");
+                    
+                    if(password === null) return; // Annulation
+                    
+                    const hashedInput = CryptoJS.SHA256(password).toString();
+                    
+                    if(hashedInput === ADMIN_PASSWORD_HASH) {
+                        localStorage.removeItem('votes');
+                        votes = {};
+                        updateStats();
+                        alert('Réinitialisation réussie !');
+                        location.reload();
+                    } else {
+                        alert('Mot de passe incorrect !');
+                    }
+                }
+                </script>
+            </form>
+        </section>
+    </div>
+
+<script>
+
+    function updateTeamCounter() {
+        document.getElementById('teamCounter').textContent = 
+            `Équipes inscrites: ${teams.length}/${MAX_TEAMS}`;
+    }
+
+    // Gestion de l'interface
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+        document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
+        document.getElementById(sectionId).style.display = 'block';
+        event.target.classList.add('active');
+    }
+
+    // Système d'inscription
+    let teams = JSON.parse(localStorage.getItem('teams')) || [];
+    const MAX_TEAMS = 12;
+
+    function hashPassword(password) {
+        return CryptoJS.SHA256(password).toString();
+    }
+
+    function updateTeamList() {
+        const container = document.getElementById('teamList');
+        container.innerHTML = teams.map(team => `
+            <div class="theme-group">
+                <h3>Équipe ${team.id}</h3>
+                <p>Chef: ${team.leader}</p>
+                <p>Membres: ${team.size}</p>
+                <small>Créé le: ${new Date(team.created).toLocaleDateString()}</small>
+            </div>
+        `).join('');
+    }
+
+    function deleteTeam() {
+    const teamId = document.getElementById('deleteTeamId').value.trim();
+    const password = document.getElementById('deleteTeamPassword').value;
+    
+    if(!teamId || !password) {
+        return alert('Veuillez remplir tous les champs');
+    }
+
+    const teamIndex = teams.findIndex(t => t.id === teamId);
+    
+    if(teamIndex === -1) {
+        return alert('ID d\'équipe incorrect');
+    }
+
+    const hashedPassword = hashPassword(password);
+    
+    if(teams[teamIndex].password !== hashedPassword) {
+        return alert('Mot de passe incorrect');
+    }
+
+    if(confirm('Êtes-vous sûr de vouloir supprimer définitivement cette équipe ?')) {
+        teams.splice(teamIndex, 1);
+        localStorage.setItem('teams', JSON.stringify(teams));
+        updateTeamList();
+        updateTeamCounter();
+        alert('Équipe supprimée avec succès');
+        document.getElementById('deleteTeamId').value = '';
+        document.getElementById('deleteTeamPassword').value = '';
+    }
+}
+
+    document.getElementById('teamForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const leader = document.getElementById('leaderName').value.trim();
+        const size = parseInt(document.getElementById('teamSize').value);
+        const password = document.getElementById('teamPassword').value;
+
+        if (teams.length >= MAX_TEAMS) return alert('Nombre maximum d\'équipes atteint!');
+        if (!leader || !password) return alert('Tous les champs sont requis!');
+        if (size < 2 || size > 5) return alert('Taille d\'équipe invalide!');
+
+        const teamId = 'EQP-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+        teams.push({
+            id: teamId,
+            leader,
+            size,
+            password: hashPassword(password),
+            created: new Date().toISOString()
+        });
+
+        localStorage.setItem('teams', JSON.stringify(teams));
+        updateTeamList();
+        updateTeamCounter();
+        e.target.reset();
+        alert(`Équipe créée! ID: ${teamId}`);
+    });
+
+    // Système de sondage
+    let votes = JSON.parse(localStorage.getItem('votes')) || {};
+
+    function updateStats() {
+        const total = Object.values(votes).reduce((a, b) => a + b, 0) || 1;
+        
+        document.querySelectorAll('.theme-item').forEach(item => {
+            const id = item.dataset.id;
+            const percentage = ((votes[id] || 0) / total * 100).toFixed(1);
+            item.querySelector('.progress-fill').style.width = `${percentage}%`;
+            item.querySelector('.percentage').textContent = `${percentage}%`;
+        });
+    }
+
+    document.getElementById('surveyForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const selected = Array.from(document.querySelectorAll('input[name="theme"]:checked'))
+                           .map(input => input.closest('.theme-item').dataset.id);
+
+        if (selected.length > 5) return alert('Maximum 5 thèmes!');
+        selected.forEach(id => votes[id] = (votes[id] || 0) + 1);
+        
+        localStorage.setItem('votes', JSON.stringify(votes));
+        updateStats();
+        e.target.reset();
+    });
+
+    // Initialisation
+    
+    updateTeamList();
+    updateTeamCounter();
+    updateStats();
+</script>
+
+</body>
+</html>
